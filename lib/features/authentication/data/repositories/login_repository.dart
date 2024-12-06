@@ -21,12 +21,12 @@ class LoginRepositoryImpl implements LoginRepository {
     final token = loginModel.token;
     if (token != null) {
       final role = JwtDecoder.getRoleFromToken(token);
-      final emailFromToken = JwtDecoder.getEmailFromToken(token);
       
       return LoginEntity(
         token: token,
-        email: emailFromToken ?? loginModel.email,
+        email: loginModel.email,
         role: role,
+        institutionId: loginModel.institutionId,
       );
     } else {
       throw Exception("Token inválido o no presente");

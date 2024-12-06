@@ -32,70 +32,77 @@ class _LoginScreenState extends State<LoginScreen> {
   final tokenService = GetIt.instance<TokenService>();
   
   Future<void> _loginSubmit() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true;
+    });
 
-      try {
-        final String email = _emailController.text.trim();
-        final String password = _passwordController.text.trim();
+    try {
+      final String email = _emailController.text.trim();
+      final String password = _passwordController.text.trim();
 
-        final LoginModel loginModel = LoginModel(
-          email: email,
-          password: password
+      final LoginModel loginModel = LoginModel(
+        email: email,
+        password: password,
+      );
+
+      final loginUseCase = getIt<Login>();
+      final result = await loginUseCase.call(loginModel);
+
+      if (result.token != null) {
+        // Guardar token, email e institutionId
+        await TokenService.saveToken(result.token!);
+        await TokenService.saveEmail(result.email);
+        await TokenService.saveInstitutionId(result.institutionId); // Almacenar institutionId si está disponible
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AppNavigator(userRole: result.role!),
+          ),
         );
-        final loginUseCase = getIt<Login>();
-        final result = await loginUseCase.call(loginModel);
-        if(result.token != null) {
-          await TokenService.saveToken(result.token!);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AppNavigator(userRole: result.role!),
-            ),
-          );
-        } else {
-          throw Exception("Error: Token no recibido");
-        }
-      } on InvalidCredentialsException {
-        MotionToast.error(
-          title: const Text("Error"),
-          description: const Text('Credenciales inválidas'),
-          position: MotionToastPosition.top,
-        ).show(context);
-      } on UserNotFoundException {
-        MotionToast.error(
-          title: const Text("Error"),
-          description: const Text('Usuario no encontrado'),
-          position: MotionToastPosition.top
-        ).show(context);
-      } on NetworkException {
-        MotionToast.error(
-          title: const Text('Error'),
-          description: const Text('Hubo un problema al iniciar sesión. Inténtalo más tarde'),
-          position: MotionToastPosition.top
-        ).show(context);
-      } on AuthException catch (authError) {
-        MotionToast.error(
-          title: const Text('Error'),
-          description: Text(authError.message),
-          position: MotionToastPosition.top
-        ).show(context);
-      } catch (error) {
-        print('Error inesperado ${error.toString()}');
-        MotionToast.error(
-          title: const Text('Error'),
-          description: const Text('Hubo un problema al iniciar sesión. Inténtalo más tarde'),
-          position: MotionToastPosition.top,
-        ).show(context);
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
+      } else {
+        throw Exception("Error: Token no recibido");
       }
+    } on InvalidCredentialsException {
+      MotionToast.error(
+        title: const Text("Error"),
+        description: const Text('Credenciales inválidas'),
+        position: MotionToastPosition.top,
+      ).show(context);
+    } on UserNotFoundException {
+      MotionToast.error(
+        title: const Text("Error"),
+        description: const Text('Usuario no encontrado'),
+        position: MotionToastPosition.top,
+      ).show(context);
+    } on NetworkException {
+      MotionToast.error(
+        title: const Text('Error'),
+        description: const Text('Hubo un problema al iniciar sesión. Inténtalo más tarde'),
+        position: MotionToastPosition.top,
+      ).show(context);
+    } on AuthException catch (authError) {
+      MotionToast.error(
+        title: const Text('Error'),
+        description: Text(authError.message),
+        position: MotionToastPosition.top,
+      ).show(context);
+    } catch (error) {
+      print('Error inesperado ${error.toString()}');
+      MotionToast.error(
+        title: const Text('Error'),
+        description: const Text('Hubo un problema al iniciar sesión. Inténtalo más tarde'),
+        position: MotionToastPosition.top,
+      ).show(context);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
+}
+
 
   String? validateEmail(String? value) {
     final RegExp emailRegExp = RegExp(
@@ -176,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         keyboardType: TextInputType.emailAddress
                       ),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         obscureText: _isObscure,
                         validator: validatePassword,

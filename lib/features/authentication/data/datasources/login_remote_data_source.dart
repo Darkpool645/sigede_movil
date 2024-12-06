@@ -11,9 +11,7 @@ abstract class LoginRemoteDataSource{
 class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   final DioClient dioClient;
 
-  LoginRemoteDataSourceImpl({
-    required this.dioClient
-  });
+  LoginRemoteDataSourceImpl({required this.dioClient});
 
   @override
   Future<LoginEntity> login(LoginModel loginModel) async {
@@ -24,14 +22,15 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       );
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        return LoginModel.fromJson(response.data);
-      } else { 
+        return LoginModel.fromJson(response.data); // Mapea los datos correctamente
+      } else {
         throw DioException(
           requestOptions: response.requestOptions,
-          response: response
+          response: response,
         );
       }
     } on DioException catch (dioError) {
+      // Manejo de errores basado en el statusCode
       if (dioError.response != null) {
         switch (dioError.response?.statusCode) {
           case 400:
@@ -48,8 +47,6 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       } else {
         throw Exception('Error de red: ${dioError.message}');
       }
-    } catch (e) {
-      throw Exception('Error inesperado: ${e.toString()}');
     }
   }
 }
