@@ -7,11 +7,9 @@ class GetCapturistas {
   GetCapturistas({required this.repository}) ;
 
   Future<List<SimpleCapturista>> call({
-    required String role,
     required int institutionId,
   }) {
     return repository.getAllCapturistas(
-      role: role,
       institutionId: institutionId,
     );
   }

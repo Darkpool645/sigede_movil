@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sigede_movil/config/locator.dart';
+import 'package:sigede_movil/core/services/token_service.dart';
 import 'package:sigede_movil/modules/admin/data/models/simple_capturista.dart';
 import 'package:sigede_movil/modules/admin/domain/use_cases/get_capturistas.dart';
+import 'package:sigede_movil/utils/jwt_decoder.dart';
 
 class ManagementCapturist extends StatefulWidget {
   const ManagementCapturist({super.key});
@@ -24,15 +26,23 @@ class _ManagementCapturistState extends State<ManagementCapturist> {
     _loadCapturistas();
   }
 
+  Future<String?> _determineStartRoute() async {
+    final token = await TokenService.getToken();
+
+    if (token != null && !JwtDecoder.isExpired(token)) {
+      return JwtDecoder.getRoleFromToken(token);
+    }
+
+    return null;
+  }
+
   Future<void> _loadCapturistas() async {
   try {
-
+    
     // ESTATICO CAMBIAR
-    final role = "capturista";
     final institutionId = 1;
 
     final users = await getCapturistas.call(
-      role: role,
       institutionId: institutionId,
     );
 
@@ -105,14 +115,14 @@ class _ManagementCapturistState extends State<ManagementCapturist> {
                     children: [
                       const Icon(
                         Icons.error_outline,
-                        color: Colors.red,
+                        color: Colors.grey,
                         size: 60,
                       ),
                       const SizedBox(height: 16),
                       Text(
                         errorMessage!,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16, color: Colors.red),
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -149,7 +159,7 @@ class _ManagementCapturistState extends State<ManagementCapturist> {
                               Navigator.pushNamed(
                                 context,
                                 '/editCapturist',
-                                arguments: capturista.userId,
+                                arguments: capturista.userAccountId,
                               );
                             },
                             child: Card(
@@ -177,11 +187,11 @@ class _ManagementCapturistState extends State<ManagementCapturist> {
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         ),
-                                        subtitle: Text(
-                                          capturista.email,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
+                                        // subtitle: Text(
+                                        //   capturista.email,
+                                        //   overflow: TextOverflow.ellipsis,
+                                        //   maxLines: 1,
+                                        // ),
                                       ),
                                     ),
                                   ],

@@ -1,18 +1,18 @@
 class SimpleCapturista {
-  final int userId;
-  final String email;
+  final int userAccountId;
+  final String status;
   final String name;
 
   SimpleCapturista({
-    required this.userId,
-    required this.email,
+    required this.userAccountId,
+    required this.status,
     required this.name,
   });
 
   factory SimpleCapturista.fromJson(Map<String, dynamic> json) {
     return SimpleCapturista(
-      userId: json['userId'],
-      email: json['email'],
+      userAccountId: json['userAccountId'],
+      status: json['status'],
       name: json['name'],
     );
   }

@@ -4,7 +4,6 @@ import 'package:sigede_movil/modules/admin/data/models/simple_capturista.dart';
 
 abstract class CapturistaRepository {
   Future<List<SimpleCapturista>> getAllCapturistas({
-    required String role,
     required int institutionId,
   });
   Future<Capturista> getCapturista({
@@ -22,11 +21,9 @@ class CapturistaRepositoryImpl implements CapturistaRepository {
 
   @override
   Future<List<SimpleCapturista>> getAllCapturistas({
-    required String role,
     required int institutionId,
   }) async {
     return await capturistaRemoteDataSource.getAllCapturistas(
-      role: role,
       institutionId: institutionId,
     );
   }

@@ -4,7 +4,6 @@ import 'package:sigede_movil/modules/admin/data/models/simple_capturista.dart';
 
 abstract class CapturistaRemoteDataSource {
   Future<List<SimpleCapturista>> getAllCapturistas({
-    required String role,
     required int institutionId,
   });
   Future<Capturista> getCapturista({required int userId});
@@ -22,18 +21,13 @@ class CapturistaRemoteDataSourceImpl implements CapturistaRemoteDataSource {
 
   @override
   Future<List<SimpleCapturista>> getAllCapturistas({
-    required String role,
     required int institutionId,
   }) async {
-    final response = await dioClient.dio.post(
-      '/api/users/get-all-by-institution-rolename?page=0&size=10&sort=name,desc',
-      data: {
-        "role": role,
-        "institutionId": institutionId,
-      },
+    final response = await dioClient.dio.get(
+      '/api/users/capturists/$institutionId',
     );
     print('LLEGO: ${response}');
-    final List<dynamic> data = response.data['data']['content'] ?? [];
+    final List<dynamic> data = response.data ?? [];
     return data.map((json) => SimpleCapturista.fromJson(json)).toList();
   }
 
