@@ -144,9 +144,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   await _authService.logout();
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const PublicNavigator()),
-                    (route) => false, // Elimina todas las rutas de la pila
+                    MaterialPageRoute(builder: (context) => const PublicNavigator()),
+                    (route) => false,
                   );
                 },
                 style: ElevatedButton.styleFrom(

@@ -4,13 +4,15 @@ class LoginModel extends LoginEntity{
   LoginModel({
     super.token,
     required super.email,
-    super.password
+    super.password,
+    super.institutionId
   });
 
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     return LoginModel(
       email: json['email'],
-      token: json['token']
+      token: json['token'],
+      institutionId: json['institutionId']
     );
   }
 

@@ -15,17 +15,23 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        // Aquí se espera una respuesta con un token y un email
         final responseData = response.data as Map<String, dynamic>;
         final token = responseData['token'] as String;
         final userEmail = responseData['email'] as String;
 
-        // Guardar el token en el servicio de almacenamiento
+        final institutionId = responseData.containsKey('institutionId')
+            ? responseData['institutionId']
+            : null;
+
         await TokenService.saveToken(token);
+        await TokenService.saveEmail(userEmail);
 
-        // Decodificar el token para obtener información adicional (si es necesario)
-        final role = JwtDecoder.getRoleFromToken(token) ?? 'user'; // Asignar un valor por defecto si el rol es null
+        if (institutionId != null) {
+          await TokenService.saveInstitutionId(institutionId);
+        }
 
+        // Decodificar el token para obtener información adicional
+        final role = JwtDecoder.getRoleFromToken(token);
 
         return {
           'success': true,
@@ -33,14 +39,13 @@ class AuthService {
           'role': role,
         };
       } else {
-        // Si la respuesta no es 200, es un error
         return {
           'success': false,
-          'message': 'Error en la autenticación. Código: ${response.statusCode}'
+          'message':
+              'Error en la autenticación. Código: ${response.statusCode}',
         };
       }
     } catch (e) {
-      // Manejo de errores en caso de que haya excepciones
       return {
         'success': false,
         'message': 'Error al realizar la petición: $e',
@@ -50,5 +55,7 @@ class AuthService {
 
   Future<void> logout() async {
     await TokenService.clearToken(); // Borrar token
+    await TokenService.clearInstitutionId();
+    await TokenService.clearUserEmail();
   }
 }
