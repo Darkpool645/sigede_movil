@@ -16,7 +16,7 @@ class _SuperAdminNavigatorState extends State<SuperAdminNavigator> {
   final List<Widget> _screens = [
     const InstitutionsScreen(),
     const CreateInstitutionScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:sigede_movil/core/models/institution_model.dart';
+import 'package:sigede_movil/core/models/create_institution_model.dart';
 import 'package:sigede_movil/core/services/institutes_service.dart';
 import 'package:sigede_movil/config/dio_client.dart';
 
@@ -20,7 +20,7 @@ class _InstitutionsScreenState extends State<InstitutionsScreen> {
   int _currentPage = 0;
   final int _pageSize = 10;
   String _searchQuery = '';
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {

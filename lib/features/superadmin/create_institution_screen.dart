@@ -60,7 +60,6 @@ class _CreateInstitutionScreenState extends State<CreateInstitutionScreen> {
           _imageUrl = response.data['secure_url'];
           _imageError = null;
         });
-        print('Imagen subida con éxito: $_imageUrl');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Imagen subida con éxito: $_imageUrl')),
         );
@@ -218,5 +217,5 @@ class _CreateInstitutionScreenState extends State<CreateInstitutionScreen> {
         ),
       ),
     );
-  }
+  }  
 }

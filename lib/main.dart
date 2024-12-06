@@ -3,8 +3,10 @@ import 'package:sigede_movil/features/authentication/public_navigator.dart';
 import 'package:sigede_movil/app_navigator.dart';
 import 'package:sigede_movil/utils/jwt_decoder.dart';
 import 'package:sigede_movil/core/services/token_service.dart';
+import 'package:sigede_movil/config/locator.dart';
 
 void main() {
+  setupServiceLocator();
   runApp(const MyApp());
 }
 

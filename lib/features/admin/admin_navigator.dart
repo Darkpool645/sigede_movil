@@ -14,7 +14,7 @@ class _AdminNavigatorState extends State<AdminNavigator> {
 
   final List<Widget> _screens = [
     const CredentialsScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   @override

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:sigede_movil/config/dio_client.dart';
-import 'package:sigede_movil/core/models/institution_model.dart';
+import 'package:sigede_movil/core/models/create_institution_model.dart';
 
 class InstitutionService {
   final DioClient _dioClient;

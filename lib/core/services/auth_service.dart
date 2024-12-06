@@ -1,59 +1,50 @@
 import '../../config/dio_client.dart';
-import '../models/api_response.dart';
 import '../services/token_service.dart';
+import 'package:sigede_movil/utils/jwt_decoder.dart';
 
 class AuthService {
   final DioClient _client;
 
   AuthService() : _client = DioClient();
 
-  Future<ApiResponse<String>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await _client.dio.post(
-        '/api/auth/login',
-        data: {'username': email, 'password': password},
+        '/login',
+        data: {'email': email, 'password': password},
       );
 
-      final apiResponse = ApiResponse<String>.fromJson(
-        response.data,
-        (data) => data as String,
-      );
+      if (response.statusCode == 200) {
+        // Aquí se espera una respuesta con un token y un email
+        final responseData = response.data as Map<String, dynamic>;
+        final token = responseData['token'] as String;
+        final userEmail = responseData['email'] as String;
 
-      if (!apiResponse.error && apiResponse.data != null) {
-        await TokenService.saveToken(apiResponse.data!); // Guardar token
+        // Guardar el token en el servicio de almacenamiento
+        await TokenService.saveToken(token);
+
+        // Decodificar el token para obtener información adicional (si es necesario)
+        final role = JwtDecoder.getRoleFromToken(token) ?? 'user'; // Asignar un valor por defecto si el rol es null
+
+
+        return {
+          'success': true,
+          'token': token,
+          'role': role,
+        };
+      } else {
+        // Si la respuesta no es 200, es un error
+        return {
+          'success': false,
+          'message': 'Error en la autenticación. Código: ${response.statusCode}'
+        };
       }
-
-      return apiResponse;
     } catch (e) {
-      return ApiResponse<String>(
-        data: null,
-        error: true,
-        statusCode: 500,
-        message: 'Error al iniciar sesión: $e',
-      );
-    }
-  }
-
-  Future<ApiResponse<String>> recoverPassword(String email) async {
-    try{
-      final response = await _client.dio.post(
-        '/api/auth/recovery-password',
-        data: {'username': email},
-      );
-
-      final apiResponse = ApiResponse<String>.fromJson(
-        response.data,
-        (data) => data as String,
-      );
-
-      return apiResponse;
-    } catch (e) {
-      return ApiResponse<String>( 
-        data: null,
-        error: true,
-        statusCode: 500,
-        message: 'Error al recuperar la contraseña: $e',
-      );
+      // Manejo de errores en caso de que haya excepciones
+      return {
+        'success': false,
+        'message': 'Error al realizar la petición: $e',
+      };
     }
   }
 

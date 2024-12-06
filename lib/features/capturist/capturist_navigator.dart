@@ -14,7 +14,7 @@ class _CapturistNavigatorState extends State<CapturistNavigator> {
 
   final List<Widget> _screens = [
     const CredentialsScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   @override
