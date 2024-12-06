@@ -15,13 +15,10 @@ import 'package:sigede_movil/modules/admin/domain/use_cases/get_capturistas.dart
 import 'package:sigede_movil/modules/admin/domain/use_cases/post_capturista.dart';
 import 'package:sigede_movil/modules/admin/domain/use_cases/put_capturista.dart';
 import 'package:sigede_movil/modules/auth/data/datasources/code_confirmation_data_source.dart';
-import 'package:sigede_movil/modules/auth/data/datasources/recovery_password_data_source.dart';
 import 'package:sigede_movil/modules/auth/data/datasources/reset_password_data_source.dart';
 import 'package:sigede_movil/modules/auth/data/repositories/code_confirmation_repository.dart';
-import 'package:sigede_movil/modules/auth/data/repositories/recovery_password_repository.dart';
 import 'package:sigede_movil/modules/auth/data/repositories/reset_password_repository.dart';
 import 'package:sigede_movil/modules/auth/domain/use_cases/code_confirmation.dart';
-import 'package:sigede_movil/modules/auth/domain/use_cases/recovery_password.dart';
 import 'package:sigede_movil/modules/auth/domain/use_cases/reset_password.dart';
 import 'package:sigede_movil/modules/superadmin/data/datasources/admin_data_source.dart';
 import 'package:sigede_movil/modules/superadmin/data/datasources/institution_data_source.dart';
