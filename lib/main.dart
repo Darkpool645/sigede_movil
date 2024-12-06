@@ -6,7 +6,7 @@ import 'package:sigede_movil/core/services/token_service.dart';
 import 'package:sigede_movil/config/locator.dart';
 
 void main() {
-  setupServiceLocator();
+  setupServicesl();
   runApp(const MyApp());
 }
 
@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
           }
 
           final role = snapshot.data;
-
           if (role == null) {
             return const PublicNavigator(); 
           }

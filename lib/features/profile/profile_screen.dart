@@ -15,9 +15,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isEditing = false; // Controla si estamos en modo edición
 
   // Controladores para los campos de texto
-  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: const Text('Perfil'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView( // Hace que el contenido sea scrollable
+      body: SingleChildScrollView(
+        // Hace que el contenido sea scrollable
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -41,8 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       size: 80,
                       color: Colors.blue,
                     ),
-                     SizedBox(height: 10),
-                     Text(
+                    SizedBox(height: 10),
+                    Text(
                       'Universidad Tecnológica\nEmiliano Zapata',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -69,7 +72,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               // Campo no editable: Correo
               TextFormField(
-                initialValue: 'juan.perez@ejemplo.com', // Reemplaza con el valor dinámico
+                initialValue:
+                    'juan.perez@ejemplo.com', // Reemplaza con el valor dinámico
                 decoration: const InputDecoration(
                   labelText: 'Correo electrónico',
                   prefixIcon: Icon(Icons.email),
@@ -124,12 +128,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isEditing ? Colors.green : Colors.black,
+                  backgroundColor: isEditing ? Colors.green : Colors.blueGrey,
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
                 child: Text(
                   isEditing ? 'Guardar' : 'Editar',
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
               const SizedBox(height: 20),
@@ -150,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: const Text(
                   'Cerrar sesión',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ],
