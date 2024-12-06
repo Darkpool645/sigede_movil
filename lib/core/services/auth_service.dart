@@ -23,15 +23,12 @@ class AuthService {
             ? responseData['institutionId']
             : null;
 
-        print("Guardando datos");
-        // Guardar datos en SharedPreferences
         await TokenService.saveToken(token);
         await TokenService.saveEmail(userEmail);
 
         if (institutionId != null) {
           await TokenService.saveInstitutionId(institutionId);
         }
-        print("Datos guardados");
 
         // Decodificar el token para obtener información adicional
         final role = JwtDecoder.getRoleFromToken(token);

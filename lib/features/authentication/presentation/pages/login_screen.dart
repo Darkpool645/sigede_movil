@@ -89,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
         position: MotionToastPosition.top,
       ).show(context);
     } catch (error) {
-      print('Error inesperado ${error.toString()}');
       MotionToast.error(
         title: const Text('Error'),
         description: const Text('Hubo un problema al iniciar sesión. Inténtalo más tarde'),

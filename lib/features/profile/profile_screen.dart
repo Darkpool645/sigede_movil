@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigede_movil/features/authentication/public_navigator.dart';
 import '../../core/services/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -137,8 +138,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ElevatedButton(
                 onPressed: () async {
                   await _authService.logout();
-                  // Aquí iría la lógica para cerrar sesión
-                  Navigator.pop(context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PublicNavigator()),
+                    (route) => false,
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
